@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Start Here — SPM AI Prototyping Kit</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+    code { background: #eef0f8; border-radius: 3px; padding: 0.1rem 0.35rem; font-size: 0.8rem; color: #0059FF; }
+    .code-block { background: #1a1a2e; color: #e0e0ff; border-radius: 6px; padding: 0.6rem 1rem; font-size: 0.82rem; margin-top: 0.35rem; font-family: monospace; }
+    a { color: #0059FF; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <div id="root">
+    <div style="min-height: 100vh; background: #f4f6ff;">
+      <!-- Header -->
+      <div style="background: #0059FF; color: #fff; padding: 2rem 2rem 1.5rem;">
+        <div style="max-width: 760px; margin: 0 auto;">
+          <a href="http://localhost:3000/" style="color: rgba(255,255,255,0.75); text-decoration: none; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 0.35rem; margin-bottom: 1rem;">← Back to Gallery</a>
+          <h1 style="margin: 0 0 0.35rem; font-size: 1.75rem; font-weight: 700; line-height: 1.2;">Start Here</h1>
+          <p style="margin: 0 0 1.25rem; opacity: 0.85; font-size: 0.95rem;">Get set up and build your first prototype in under 10 minutes.</p>
+          <!-- Progress bar -->
+          <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <div style="flex: 1; height: 6px; background: rgba(255,255,255,0.2); border-radius: 99px; overflow: hidden;">
+              <div id="progress-fill" style="width: 0%; height: 100%; background: #fff; border-radius: 99px; transition: width 0.35s ease;"></div>
+            </div>
+            <span id="progress-text" style="font-size: 0.82rem; opacity: 0.9; white-space: nowrap;">0 / 8 done</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Steps -->
+      <div style="max-width: 760px; margin: 0 auto; padding: 2rem 1rem 4rem;">
+        <div id="all-done-banner" style="display: none; background: #f3faf5; border: 1px solid #91db8b; border-radius: 8px; padding: 1rem 1.25rem; margin-bottom: 1.5rem; align-items: center; gap: 0.75rem;">
+          <span style="font-size: 1.5rem;">🎉</span>
+          <div>
+            <div style="font-weight: 700; color: #2e844a; font-size: 0.95rem;">You're all set!</div>
+            <div style="color: #444; font-size: 0.85rem;">You're ready to build. Head back to the <a href="http://localhost:3000/">Gallery</a> or ask Cursor: <em>"Create a new prototype page for me"</em></div>
+          </div>
+        </div>
+
+        <div id="steps-container" style="display: flex; flex-direction: column; gap: 1rem;"></div>
+
+        <!-- FAQ Section -->
+        <div style="margin-top: 2.5rem;">
+          <h2 style="font-size: 1rem; font-weight: 700; color: #181818; margin-bottom: 0.75rem;">Frequently Asked Questions</h2>
+          <div id="faq-container" style="display: flex; flex-direction: column; gap: 0.75rem;"></div>
+        </div>
+
+        <div style="text-align: center; margin-top: 2.5rem;">
+          <a href="http://localhost:3000/" style="display: inline-block; margin-right: 0.75rem; padding: 0.5rem 1rem; background: #fff; border: 1px solid #c9c9c9; border-radius: 4px; color: #181818; font-weight: 600; font-size: 0.875rem;">Back to Gallery</a>
+          <a href="http://localhost:3000/prompts" style="display: inline-block; padding: 0.5rem 1rem; background: #0059FF; border-radius: 4px; color: #fff; font-weight: 600; font-size: 0.875rem;">Browse Prompt Library →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const STEPS = [
+      { id: 1, title: 'Prerequisites', description: 'Before you start, make sure you have the following installed on your machine.', noCommand: true, tips: ['Cursor (free) — the AI code editor this kit is built for. Download at cursor.sh', 'Git — to clone and push changes. Most Macs already have it.', 'Node.js v18+ — the setup script installs this automatically if missing.'] },
+      { id: 2, title: 'Clone the repo', description: 'Download the kit to your machine. This is a one-time step — the folder stays permanently at ~/Documents/work/SPM-AI-Prototyping-Kit/.', command: 'mkdir -p ~/Documents/work && cd ~/Documents/work\ngit clone https://git.soma.salesforce.com/maharaj-ma/SPM-AI-Prototyping-Kit.git\ncd SPM-AI-Prototyping-Kit', manualSteps: [{ label: "1. Create the work folder (if it doesn't exist)", code: 'mkdir -p ~/Documents/work' }, { label: '2. Navigate into it', code: 'cd ~/Documents/work' }, { label: '3. Clone the repo', code: 'git clone https://git.soma.salesforce.com/maharaj-ma/SPM-AI-Prototyping-Kit.git' }, { label: '4. Navigate into the project folder', code: 'cd SPM-AI-Prototyping-Kit' }], tips: ['Cloning is a one-time setup. The folder stays on your machine permanently.', 'The kit will be saved at ~/Documents/work/SPM-AI-Prototyping-Kit/', 'You can also use GitHub Desktop if you prefer a visual interface.'] },
+      { id: 3, title: 'Run the dev server', description: 'Start the local web server so you can see the kit live in your browser at http://localhost:3000. The setup script handles everything — Node install, npm install, and launching the server.', command: 'sh scripts/setup.sh', manualSteps: [{ label: '1. Install dependencies', code: 'npm install' }, { label: '2. Start the dev server', code: 'npm run dev' }, { label: '3. Open in browser', code: 'http://localhost:3000' }], tips: ['Keep this terminal tab running while you work — closing it stops the server.'] },
+      { id: 31, label: '3A', title: 'Coming back later?', description: 'Closing the terminal stops the server, but your files stay on your machine permanently. Next time, just open a new Terminal and run these two commands to pick up where you left off.', command: 'cd ~/Documents/work/SPM-AI-Prototyping-Kit\nnpm run dev', manualSteps: [{ label: '1. Navigate to the project folder', code: 'cd ~/Documents/work/SPM-AI-Prototyping-Kit' }, { label: '2. Start the dev server', code: 'npm run dev' }], tips: ['No need to clone or npm install again — your files are always there.', 'The kit opens at http://localhost:3000 in your browser.'] },
+      { id: 4, title: 'Open in Cursor', description: 'Open the kit as a project in Cursor:', descriptionItems: ['Open Cursor → go to File → New Window', 'Then go to File → Open Folder', 'Navigate to ~/Documents/work/ and select SPM-AI-Prototyping-Kit', 'The AI rules load automatically — no configuration needed'], noCommand: true, manualSteps: [{ label: '1. Open Cursor', code: 'New to Cursor? Download free at cursor.sh' }, { label: '2. If Cursor is already open, create a new window', code: 'File → New Window' }, { label: '3. Open the kit folder', code: 'File → Open Folder' }, { label: '4. Navigate to and select', code: '~/Documents/work/SPM-AI-Prototyping-Kit' }], tips: ['The .cursor/rules/ folder is already committed — Cursor picks them up automatically.', 'Cursor will know every component, layout, and template without any configuration.', '"What components are available in this kit?" — try this in Cursor chat.', 'Working on another project? Open a second Cursor window (File → New Window) for the kit.'] },
+      { id: 5, title: 'Create your first prototype', description: 'Your personal sandbox is at src/prototypes/[yourname]/. Ask Cursor to create a page for you — it knows exactly where to put it and how to wire it up.', noCommand: true, callout: 'First, tell Cursor: "Add me as a new designer called [yourname]" — this scaffolds your personal folder in the kit.', tips: ['"Create a planning dashboard with a data table and filters" — Cursor builds it.', '"Start from the Account List template and add a right panel" — Cursor adapts an existing template.', 'Work in _local/ if you want it private and not pushed to Git.'] },
+      { id: 6, title: 'Share with the team', description: "When you're ready to share a prototype or contribute a component back to the kit, tell Cursor and it will guide you through the whole process.", noCommand: true, tips: ['"Push this to the hub" — Cursor runs quality checks and promotes your component to the shared library.', '"Share this component with the team" — Cursor adds it to the Component Showcase.', 'Always work on a branch: git checkout -b yourname/my-prototype', 'Open a Pull Request on GitHub so changes get reviewed before landing on main.'] }
+    ];
+
+    const FAQ = [
+      { q: 'What about existing projects — do I need to open the kit in every project?', a: '<p style="margin:0 0 0.5rem">No. For an existing project you already have in Cursor, you have two options:</p><p style="margin:0 0 0.25rem"><strong>Option 1 — Two windows (recommended):</strong> Open the kit in a second Cursor window via <code style="background:#eef0f8;border-radius:3px;padding:0.1rem 0.3rem;font-size:0.8rem">File → New Window</code>, then reference it alongside your own project. You can copy components across, or ask Cursor in your project: <em>"Look at ~/Documents/work/SPM-AI-Prototyping-Kit/src/library/components/ui/Button.tsx and use the same pattern here."</em></p><p style="margin:0.5rem 0 0"><strong>Option 2 — Reference in chat:</strong> Tell Cursor where the kit lives: <em>"I have the SPM AI Prototyping Kit at ~/Documents/work/SPM-AI-Prototyping-Kit/ — fetch the DataTable component from there."</em></p><p style="margin:0.5rem 0 0;color:#706e6b;font-size:0.82rem">Note: the .cursor/rules/ AI context only loads automatically when the kit is your open project root. In another project, reference components manually in chat.</p>' },
+      { q: 'What if I close the terminal — do I lose my work?', a: '<p style="margin:0">No. Closing the terminal only stops the local web server. Your files are permanently saved on your machine at <code style="background:#eef0f8;border-radius:3px;padding:0.1rem 0.3rem;font-size:0.8rem">~/Documents/work/SPM-AI-Prototyping-Kit/</code>. Just open a new terminal, run <code style="background:#eef0f8;border-radius:3px;padding:0.1rem 0.3rem;font-size:0.8rem">cd ~/Documents/work/SPM-AI-Prototyping-Kit && npm run dev</code>, and you\'re back.</p>' },
+      { q: 'Do I need to clone the repo again next time?', a: '<p style="margin:0">Never. Cloning is a one-time setup. The repo lives on your machine permanently. You only need <code style="background:#eef0f8;border-radius:3px;padding:0.1rem 0.3rem;font-size:0.8rem">npm run dev</code> to start working again.</p>' },
+      { q: 'The browser opened a weird URL like /sales_workspace.html instead of localhost:3000', a: '<p style="margin:0">Your browser is restoring a previously open tab. The dev server is running correctly — just manually navigate to <code style="background:#eef0f8;border-radius:3px;padding:0.1rem 0.3rem;font-size:0.8rem">http://localhost:3000/</code> in your address bar.</p>' },
+      { q: 'Port 3000 is already in use — how do I fix it?', a: '<p style="margin:0">Another dev server is running on that port. Run <code style="background:#eef0f8;border-radius:3px;padding:0.1rem 0.3rem;font-size:0.8rem">kill -9 $(lsof -ti:3000)</code> in Terminal to free it up, then run <code style="background:#eef0f8;border-radius:3px;padding:0.1rem 0.3rem;font-size:0.8rem">npm run dev</code> again. Alternatively, Vite will automatically pick the next free port (3001, 3002...) and show the URL in the terminal.</p>' },
+      { q: 'Do I need to pull changes from GitHub every time?', a: '<p style="margin:0 0 0.5rem">Not every time — but you should pull whenever you want the latest components, templates, or fixes that others have contributed. Think of it like syncing a shared document.</p><p style="margin:0 0 0.5rem"><strong>When to pull:</strong></p><ul style="margin:0 0 0.5rem;padding-left:1.25rem"><li>Before starting a new work session</li><li>When someone tells you a new component or template was added</li><li>Before pushing your own changes (to avoid conflicts)</li></ul><p style="margin:0 0 0.25rem"><strong>How to do it:</strong></p><code style="display:block;background:#1a1a2e;color:#e0e0ff;border-radius:6px;padding:0.6rem 1rem;font-size:0.82rem;margin-top:0.35rem;font-family:monospace">cd ~/Documents/work/SPM-AI-Prototyping-Kit && git pull</code><p style="margin:0.5rem 0 0;color:#706e6b;font-size:0.82rem">This is safe to run any time. If you have local changes, Git will merge them. If there is a conflict, it will tell you exactly which files need attention.</p>' }
+    ];
+
+    let completed = new Set();
+    const STORAGE_KEY = 'start-here-completed';
+
+    function loadCompleted() {
+      try {
+        const s = localStorage.getItem(STORAGE_KEY);
+        if (s) completed = new Set(JSON.parse(s));
+      } catch (_) {}
+    }
+    function saveCompleted() {
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify([...completed])); } catch (_) {}
+    }
+
+    function copyToClipboard(text, btn) {
+      navigator.clipboard.writeText(text).then(() => {
+        btn.textContent = 'Copied!';
+        btn.style.background = '#2e844a';
+        setTimeout(() => { btn.textContent = 'Copy'; btn.style.background = 'rgba(255,255,255,0.1)'; }, 2000);
+      });
+    }
+
+    function renderCommandBlock(cmd) {
+      const div = document.createElement('div');
+      div.style.cssText = 'background:#1a1a2e;border-radius:6px;padding:0.75rem 1rem;display:flex;align-items:flex-start;gap:0.75rem;justify-content:space-between;';
+      const pre = document.createElement('pre');
+      pre.style.cssText = 'margin:0;font-family:monospace;font-size:0.85rem;color:#e0e0ff;white-space:pre-wrap;word-break:break-all;flex:1;';
+      pre.textContent = cmd;
+      const btn = document.createElement('button');
+      btn.textContent = 'Copy';
+      btn.style.cssText = 'background:rgba(255,255,255,0.1);color:#fff;border:1px solid rgba(255,255,255,0.25);border-radius:4px;padding:0.25rem 0.75rem;font-size:0.75rem;font-weight:600;cursor:pointer;transition:background 0.15s;white-space:nowrap;';
+      btn.onclick = () => copyToClipboard(cmd, btn);
+      div.appendChild(pre);
+      div.appendChild(btn);
+      return div;
+    }
+
+    function formatTip(tip) {
+      const m = tip.match(/^"([^"]+)"/);
+      if (m) return '<code>' + m[1] + '</code>' + tip.slice(m[0].length);
+      return tip;
+    }
+
+    function renderStep(step, isCompleted, isActive, onToggle) {
+      const borderColor = isCompleted ? '#2e844a' : isActive ? '#0059FF' : '#e5e5e5';
+      const badgeBg = isCompleted ? '#2e844a' : isActive ? '#0059FF' : '#e5e5e5';
+      const badgeColor = isCompleted || isActive ? '#fff' : '#706e6b';
+
+      const card = document.createElement('div');
+      card.style.cssText = `border-left:4px solid ${borderColor};background:#fff;border-radius:0 8px 8px 0;box-shadow:${isActive ? '0 2px 12px rgba(0,89,255,0.1)' : '0 1px 4px rgba(0,0,0,0.06)'};padding:1.5rem;transition:box-shadow 0.2s,border-color 0.2s;`;
+      card.dataset.stepId = step.id;
+
+      let inner = `
+        <div style="display:flex;align-items:flex-start;gap:1rem">
+          <div style="width:32px;height:32px;border-radius:50%;background:${badgeBg};color:${badgeColor};display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.85rem;flex-shrink:0;">${isCompleted ? '✓' : (step.label || step.id)}</div>
+          <div style="flex:1">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.5rem">
+              <h3 style="margin:0;font-size:1rem;font-weight:700;color:#181818">${step.title}</h3>
+              <button class="toggle-done" style="background:${isCompleted ? '#f3faf5' : '#f4f6ff'};color:${isCompleted ? '#2e844a' : '#0059FF'};border:1px solid ${isCompleted ? '#91db8b' : '#c4d4ff'};border-radius:4px;padding:0.2rem 0.65rem;font-size:0.72rem;font-weight:600;cursor:pointer;">${isCompleted ? 'Mark undone' : 'Mark done'}</button>
+            </div>
+            <p style="margin:${step.descriptionItems ? '0 0 0.5rem' : '0 0 1rem'};color:#444;font-size:0.9rem;line-height:1.6">${step.description}</p>
+      `;
+      if (step.descriptionItems) {
+        inner += '<ul style="margin:0 0 1rem;padding-left:1.25rem;display:flex;flex-direction:column;gap:0.3rem">';
+        step.descriptionItems.forEach(item => { inner += `<li style="color:#444;font-size:0.9rem;line-height:1.6">${item}</li>`; });
+        inner += '</ul>';
+      }
+      if (step.callout) {
+        inner += `<div style="background:#fff8e6;border:1px solid #f4bc25;border-radius:6px;padding:0.75rem 1rem;margin-bottom:1rem"><p style="margin:0;font-size:0.9rem;color:#444;line-height:1.6"><strong>Start here: </strong>${step.callout}</p></div>`;
+      }
+      if (step.command && !step._showManual) {
+        inner += '<div style="margin-bottom:0.75rem"><div style="font-size:0.75rem;font-weight:600;color:#706e6b;margin-bottom:0.35rem;text-transform:uppercase;letter-spacing:0.05em">One-click — copy & paste into Terminal</div><div class="cmd-block"></div></div>';
+      }
+      if (step.manualSteps && step._showManual) {
+        inner += '<div style="margin-bottom:0.75rem"><div style="font-size:0.75rem;font-weight:600;color:#706e6b;margin-bottom:0.5rem;text-transform:uppercase;letter-spacing:0.05em">Manual steps</div><div class="manual-steps"></div></div>';
+      }
+      if (step.manualSteps) {
+        inner += `<button class="toggle-manual" style="background:none;border:none;color:#0059FF;font-size:0.8rem;cursor:pointer;padding:0;margin-bottom:${step.tips ? '0.75rem' : 0};text-decoration:underline">${step._showManual ? 'Show one-click command instead' : 'Show manual steps instead'}</button>`;
+      }
+      if (step.tips) {
+        const tipsLabel = step.id === 5 ? 'Try asking Cursor' : step.id === 6 ? 'How to do it' : 'Tips';
+        inner += `<div style="background:#f8f9fc;border-radius:6px;padding:0.75rem 1rem"><div style="font-size:0.72rem;font-weight:700;color:#706e6b;margin-bottom:0.4rem;text-transform:uppercase;letter-spacing:0.05em">${tipsLabel}</div><ul style="margin:0;padding-left:1.25rem;display:flex;flex-direction:column;gap:0.3rem">`;
+        step.tips.forEach(tip => { inner += `<li style="font-size:0.82rem;color:#444;line-height:1.5">${formatTip(tip)}</li>`; });
+        inner += '</ul></div>';
+      }
+      inner += '</div></div>';
+      card.innerHTML = inner;
+
+      const toggleDone = card.querySelector('.toggle-done');
+      if (toggleDone) toggleDone.onclick = () => { onToggle(step.id); render(); };
+
+      const cmdBlock = card.querySelector('.cmd-block');
+      if (cmdBlock && step.command) cmdBlock.appendChild(renderCommandBlock(step.command));
+
+      const manualSteps = card.querySelector('.manual-steps');
+      if (manualSteps && step.manualSteps) {
+        step.manualSteps.forEach(s => {
+          const wrap = document.createElement('div');
+          wrap.innerHTML = `<div style="font-size:0.8rem;color:#706e6b;margin-bottom:0.2rem">${s.label}</div>`;
+          wrap.appendChild(renderCommandBlock(s.code));
+          manualSteps.appendChild(wrap);
+        });
+      }
+
+      const toggleManual = card.querySelector('.toggle-manual');
+      if (toggleManual) {
+        toggleManual.onclick = () => {
+          step._showManual = !step._showManual;
+          render();
+        };
+      }
+
+      return card;
+    }
+
+    function render() {
+      const container = document.getElementById('steps-container');
+      const progressFill = document.getElementById('progress-fill');
+      const progressText = document.getElementById('progress-text');
+      const allDoneBanner = document.getElementById('all-done-banner');
+
+      const activeStep = STEPS.find(s => !completed.has(s.id))?.id ?? null;
+
+      container.innerHTML = '';
+      STEPS.forEach(step => {
+        container.appendChild(renderStep(step, completed.has(step.id), activeStep === step.id, (id) => {
+          if (completed.has(id)) completed.delete(id); else completed.add(id);
+          saveCompleted();
+        }));
+      });
+
+      const pct = Math.round((completed.size / STEPS.length) * 100);
+      progressFill.style.width = pct + '%';
+      progressFill.style.background = completed.size === STEPS.length ? '#2e844a' : '#fff';
+      progressText.textContent = completed.size + ' / ' + STEPS.length + ' done';
+      allDoneBanner.style.display = completed.size === STEPS.length ? 'flex' : 'none';
+    }
+
+    function renderFaq() {
+      const container = document.getElementById('faq-container');
+      FAQ.forEach((item, i) => {
+        const div = document.createElement('div');
+        div.style.cssText = 'background:#fff;border-radius:8px;border:1px solid #e5e5e5;overflow:hidden;';
+        div.innerHTML = `
+          <button class="faq-btn" style="width:100%;background:none;border:none;padding:0.9rem 1.25rem;text-align:left;display:flex;justify-content:space-between;align-items:center;cursor:pointer;gap:1rem;">
+            <span style="font-weight:600;font-size:0.9rem;color:#181818">${item.q}</span>
+            <span class="faq-chevron" style="color:#706e6b;font-size:1rem;flex-shrink:0;">▾</span>
+          </button>
+          <div class="faq-answer" style="display:none;padding:0 1.25rem 1rem;font-size:0.875rem;color:#444;line-height:1.6;border-top:1px solid #f3f3f3">${item.a}</div>
+        `;
+        const btn = div.querySelector('.faq-btn');
+        const answer = div.querySelector('.faq-answer');
+        const chevron = div.querySelector('.faq-chevron');
+        btn.onclick = () => {
+          const open = answer.style.display !== 'none';
+          answer.style.display = open ? 'none' : 'block';
+          chevron.style.transform = open ? 'none' : 'rotate(180deg)';
+        };
+        container.appendChild(div);
+      });
+    }
+
+    loadCompleted();
+    render();
+    renderFaq();
+  </script>
+</body>
+</html>
